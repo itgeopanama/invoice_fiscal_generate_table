@@ -5,6 +5,7 @@ from odoo import fields, models, api, _
 import logging
 from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationError, Warning
 import json
+import subprocess
 
 _logger = logging.getLogger(__name__)
 
@@ -67,7 +68,8 @@ class AccountInvoice(models.Model):
 				'tax': self.amount_tax,
 				'ruc': self.partner_id.ruc,
 				'dv': self.partner_id.dv,
-				'sell_term': 'Normal' if self.type in ['out_invoice', 'in_invoice'] else 'Credit',
+				# 'sell_term': 'Contado' if self.type in ['out_invoice', 'in_invoice'] else 'Credit',
+				'sell_term': 'Contado' if self.payment_term_id in ['1'] else 'Credit',
 				'total': self.amount_total,
 				'sub_total': self.amount_untaxed,
 				'transaction_type': 'invoice' if self.type in ['out_invoice', 'in_invoice'] else 'cnote',
@@ -95,4 +97,11 @@ class AccountInvoice(models.Model):
 			})
 			h_id = self.env['fiscal.header'].create(header)
 			self.write({'fiscal_header': h_id.id })
+
+			# Se llama el programa para imprimir la factura fiscal'
+			cmd = "C:\Windows\System32\ffiscal\ffiscal.exe"
+			process = subprocess.Popen(cmd, stdout=subprocess.PIPE, creationflags=0x08000000)
+			process.wait()
+			# '******'
+
 		return res
