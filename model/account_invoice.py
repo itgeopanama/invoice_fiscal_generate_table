@@ -99,9 +99,9 @@ class AccountInvoice(models.Model):
 			self.write({'fiscal_header': h_id.id })
 
 			# Se llama el programa para imprimir la factura fiscal'
-			cmd = "C:\Windows\System32\ffiscal\ffiscal.exe"
-			process = subprocess.Popen(cmd, stdout=subprocess.PIPE, creationflags=0x08000000)
-			process.wait()
+			# cmd = "C:\Windows\System32\ffiscal\ffiscal.exe"
+			# process = subprocess.Popen(cmd, stdout=subprocess.PIPE, creationflags=0x08000000)
+			# process.wait()
 			# '******'
 
 		return res
