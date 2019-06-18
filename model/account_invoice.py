@@ -68,7 +68,7 @@ class AccountInvoice(models.Model):
 				'tax': self.amount_tax,
 				'ruc': self.partner_id.ruc,
 				'dv': self.partner_id.dv,
-				# 'sell_term': 'Contado' if self.type in ['out_invoice', 'in_invoice'] else 'Credit',
+				# 'sell_term': 'Contado' if self.type in ['out_invoice', 'in_invoice'] else 'Credito',
 				'sell_term': 'Contado' if self.payment_term_id in ['1'] else 'Credit',
 				'total': self.amount_total,
 				'sub_total': self.amount_untaxed,
