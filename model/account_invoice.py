@@ -69,7 +69,7 @@ class AccountInvoice(models.Model):
 				'ruc': self.partner_id.ruc,
 				'dv': self.partner_id.dv,
 				# 'sell_term': 'Contado' if self.type in ['out_invoice', 'in_invoice'] else 'Credito',
-				'sell_term': 'Contado' if self.payment_term_id in ['1'] else 'Credit',
+				'sell_term': 'Contado' if self.payment_term_id in ['1'] else 'Credito',
 				'total': self.amount_total,
 				'sub_total': self.amount_untaxed,
 				'transaction_type': 'invoice' if self.type in ['out_invoice', 'in_invoice'] else 'cnote',
@@ -97,11 +97,5 @@ class AccountInvoice(models.Model):
 			})
 			h_id = self.env['fiscal.header'].create(header)
 			self.write({'fiscal_header': h_id.id })
-
-			# Se llama el programa para imprimir la factura fiscal'
-			# cmd = "C:\Windows\System32\ffiscal\ffiscal.exe"
-			# process = subprocess.Popen(cmd, stdout=subprocess.PIPE, creationflags=0x08000000)
-			# process.wait()
-			# '******'
 
 		return res
