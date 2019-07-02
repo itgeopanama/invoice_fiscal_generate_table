@@ -154,4 +154,3 @@ class AccountInvoice(models.Model):
 			self.write({'fiscal_header': h_id.id })
 
 		return res
->>>>>>> ff6add8b0f6db69f24be4f1a29f956e2098cd91a
