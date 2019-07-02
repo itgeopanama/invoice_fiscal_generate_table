@@ -111,7 +111,7 @@ class AccountInvoice(models.Model):
 	@api.multi
 	def action_invoice_open(self):
 		res = super(AccountInvoice, self).action_invoice_open()
-		if  self.type == 'out_invoice':
+		if  self.type == 'out_invoice' or self.type == 'out_refund':
 			header = {
 				'invoice_date': self.date_invoice,
 				'seller': self.company_id.name,
@@ -154,3 +154,4 @@ class AccountInvoice(models.Model):
 			self.write({'fiscal_header': h_id.id })
 
 		return res
+
