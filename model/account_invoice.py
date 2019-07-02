@@ -52,7 +52,6 @@ class FiscalDetails(models.Model):
 
 
 class AccountInvoice(models.Model):
-<<<<<<< HEAD
     _inherit = 'account.invoice'
 
     fiscal_header = fields.Many2one('fiscal.header', string='Fiscal Info')
@@ -103,55 +102,3 @@ class AccountInvoice(models.Model):
             self.write({'fiscal_header': h_id.id})
 
         return res
-=======
-	_inherit='account.invoice'
-	
-	fiscal_header = fields.Many2one('fiscal.header', string='Fiscal Info')
-	
-	@api.multi
-	def action_invoice_open(self):
-		res = super(AccountInvoice, self).action_invoice_open()
-		if  self.type == 'out_invoice' or self.type == 'out_refund':
-			header = {
-				'invoice_date': self.date_invoice,
-				'seller': self.company_id.name,
-				'customer_code': self.partner_id.zip,
-				'customer_name': self.partner_id.name,
-				'invoice_number': self.number,
-				'company_id': self.company_id.id,
-				'ref': self.name,
-				'tax': self.amount_tax,
-				'ruc': self.partner_id.ruc,
-				'dv': self.partner_id.dv,
-				# 'sell_term': 'Contado' if self.type in ['out_invoice', 'in_invoice'] else 'Credito',
-				'sell_term': 'Contado' if self.payment_term_id.id == 1 else 'Credito',
-				'total': self.amount_total,
-				'sub_total': self.amount_untaxed,
-				'transaction_type': 'invoice' if self.type in ['out_invoice', 'in_invoice'] else 'cnote',
-			}
-				
-			detail_line = []
-			for line in self.invoice_line_ids:
-				taxp = 0
-				mapped = line.invoice_line_tax_ids.mapped('amount')
-				if mapped:
-					taxp = mapped[0]
-					
-				detail_line.append((0,0,{
-					'item_code': line.product_id.name,
-					'item_desc': line.name,
-					'tax': taxp,
-					'quantity': line.quantity,	
-					'unit_price': line.price_unit,
-					'discount': 0,
-					'total_amount': (line.quantity * (line.price_unit - 0))
-				}))
-				
-			header.update({
-				'fiscal_details': detail_line
-			})
-			h_id = self.env['fiscal.header'].create(header)
-			self.write({'fiscal_header': h_id.id })
-
-		return res
-
